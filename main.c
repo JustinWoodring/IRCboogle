@@ -172,7 +172,7 @@ int main(int argc, char const ** argv)
 		printf("%s",buffer );
 		printone = 1;
 	}
-	if(search("ERROR :Closing Link: li839-155.members.linode.com",buffer)){
+	if(search("ERROR :Closing Link: subnet mask here",buffer)){
 		printf("Server disconnected.\n");
 		printf("Quitting client.\n");
 		return 0;
@@ -180,7 +180,7 @@ int main(int argc, char const ** argv)
         if(joined == 0){
 		if(jncnt == 0){
         		if(search("Checking Ident", buffer)){
-                		 message="NICK rootcake\r\n USER rootcake 0 * :rootcake\r\n";
+                		 message="NICK username here\r\n USER username here 0 * :username here\r\n";
         		  	 send(sock , message , strlen(message) , 0 );
 				 printf("Providing credentials.\n");
 				 ++jncnt;
@@ -196,16 +196,16 @@ int main(int argc, char const ** argv)
         }
         if(inchannel == 0){
             if(search("Thank you for using freenode!",buffer)){
-                message="JOIN :#archlinux-unofficial\r\n";
+                message="JOIN :#channel\r\n";
                 send(sock , message , strlen(message) , 0 );
                 joined = 1;
 		inchannel = 1;
-                printf("Joined #archlinux-unofficial!\n");
+                printf("Joined #channel!\n");
             }
         }
         if((inchannel == 1) && (sendgreeting == 0)){
             sendgreeting = 1;
-            message="PRIVMSG #archlinux-unofficial :At ease men.\r\n";
+            message="PRIVMSG #channel :At ease men.\r\n";
             send(sock , message , strlen(message) , 0 );
             printf("Sent greeting!\n");
         }
@@ -213,26 +213,26 @@ int main(int argc, char const ** argv)
              message="PONG :Just replying!\r\n";
              send(sock , message , strlen(message) , 0 );
         }
-        if(authing || search("PRIVMSG rootcake :auth",buffer)){
+        if(authing || search("PRIVMSG username here :auth",buffer)){
             authing  = 1;
             if(authing){
-                if(search("PRIVMSG rootcake :boogle Violet05%",buffer)){
-                    message="MODE #archlinux-unofficial +o boogle\r\n";
+                if(search("PRIVMSG username here :otheruser password",buffer)){
+                    message="MODE #channel +o :otheruser\r\n";
                     send(sock , message , strlen(message) , 0 );
-                    printf("Authed boogle!\n");
+                    printf("Authed otheruser!\n");
                     authing = 0;
                 }
-                else if(search("PRIVMSG rootcake :booglejr Violet05%",buffer)){
-                    message="MODE #archlinux-unofficial +o booglejr\r\n";
+                else if(search("username here :otheruser2 password",buffer)){
+                    message="MODE #channel +o :otheruser2\r\n";
                     send(sock , message , strlen(message) , 0 );
-                    printf("Authed booglejr!\n");
+                    printf("Authed otheruser2!\n");
                     authing = 0;
 
                 }
-                else if(search("PRIVMSG rootcake :booglejunior Violet05%",buffer)){
-                    message="MODE #archlinux-unofficial +o booglejunior\r\n";
+                else if(search("username here :otheruser3 password",buffer)){
+                    message="MODE #channel +o :otheruser3\r\n";
                     send(sock , message , strlen(message) , 0 );
-                    printf("Authed booglejunior!\n");
+                    printf("Authed otheruser3!\n");
                     authing = 0;
                 }
                 ++authcnt;
