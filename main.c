@@ -65,7 +65,7 @@ int search(char * string, char buffer[1024]){
 int main(int argc, char const ** argv)
 {
     char * nick;
-    nick = "rootcake";
+    nick = "username here";
     int verbose = 0;
     int none = 0;
     if (argc > 0) {
