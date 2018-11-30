@@ -14,3 +14,4 @@
 #include "definitions.h"
 
 int search(char * string, char buffer[BUFFERSIZE]);
+int openConnection(char * hostname);
