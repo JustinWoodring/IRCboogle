@@ -20,7 +20,7 @@ int main(int argc, char const ** argv)
 	if (connect == -1){
 			return 0;
 	}
-	
+
 	char buffer[1024] = {0};
     int joined = 0;
     int inchannel = 0;
