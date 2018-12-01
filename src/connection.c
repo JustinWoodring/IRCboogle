@@ -1,7 +1,7 @@
+#include "hdr/ircb.h"
 
 int openConnection(char * hostname){
 	struct sockaddr_in address;
-    int sock = 0, valread;
     struct sockaddr_in serv_addr;
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {

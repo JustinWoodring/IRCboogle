@@ -1,3 +1,5 @@
+#include "hdr/ircb.h"
+
 int search(char * string, char buffer[BUFFERSIZE]){
     int stringlen = 0;
     int atend = 0;

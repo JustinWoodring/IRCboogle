@@ -2,26 +2,41 @@
 
 int main(int argc, char ** argv)
 {
-  char * nick;
-  nick = "username here";
+  char * unick;
+  unick = "unamehere";
   int verbose = 0;
   if (argc > 0) {
-    for (int i = 0; ++i < argc; ++i){
+    for (int i = 1; i < argc; ++i){
       if (!strcmp(argv[i], "-v")){
           verbose = 1;
       }
       else if (strcmp(argv[i], "-v")){
-          nick = argv[i];
+          unick = argv[i];
       }
     }
   }
+
+  char nick[32];
+  int lasti=0;
+  for(int i=0;i<32&&i<strlen(unick);i++){
+    nick[i] = unick[i];
+    ++lasti;
+  }
+  nick[lasti] = '\0';
+  for(int i=lasti;i<32;i++){
+    nick[i]='\0';
+  }
+  for(int i=0;i<32;i++){
+    printf("%c\n", nick[i]);
+  }
+
 
   int connect = openConnection(IRCSERVER);
 	if (connect == -1){
 			return 0;
 	}
 
-	char buffer[1024] = {0};
+	char buffer[BUFFERSIZE] = {0};
   int joined = 0;
   int inchannel = 0;
   int sendgreeting = 0;
@@ -30,13 +45,16 @@ int main(int argc, char ** argv)
   int authcnt = 0;
   int jncnt = 0;
   int printone = 0;
+  char smessage[1024];
   char * message;
   printf("Opening socket to %s\n",IRCSERVER);
   if (!joined){
     printf("Connecting...\n");
   }
   while(1){
-    char buffer[] = {0};
+    for(int i = 0;i<BUFFERSIZE;i++){
+      buffer[i] = '\0';
+    }
     //send(sock , hello , strlen(hello) , 0 );
     valread = read( sock , buffer, BUFFERSIZE);
     if (verbose || printone == 0){
@@ -50,11 +68,11 @@ int main(int argc, char ** argv)
     }
     if(joined == 0){
   		if(jncnt == 0){
-          		if(search("Checking Ident", buffer)){
-  					message="NICK "+nick+"\r\n USER "+nick+" 0 * :"+nick+"\r\n";
-  					send(sock , message , strlen(message) , 0 );
-  					printf("Providing credentials.\n");
-  					++jncnt;
+    		if(search("Checking Ident", buffer)){
+          snprintf( smessage, sizeof( smessage ), "%s%s%s%s%s%s%s", "NICK ", nick, "\r\n USER ", nick, " 0 * :", nick, "\r\n");
+          send(sock , smessage , strlen(smessage) , 0 );
+          printf("Providing credentials.\n");
+          ++jncnt;
   			}
   		}
   		else{
@@ -83,22 +101,26 @@ int main(int argc, char ** argv)
        message="PONG :Just replying!\r\n";
        send(sock , message , strlen(message) , 0 );
     }
-    if(authing || search("PRIVMSG "+nick+" :auth",buffer)){
+    snprintf( svalue, sizeof( svalue ), "%s%s%s", "PRIVMSG ", nick, " :auth");
+    if(authing || search(svalue,buffer)){
       authing = 1;
       if(authing){
-          if(search("PRIVMSG "+nick+" :otheruser password",buffer)){
+          snprintf( svalue, sizeof( svalue ), "%s%s%s", "PRIVMSG ", nick, " :otheruser password");
+          if(search(svalue,buffer)){
             message="MODE #channel +o :otheruser\r\n";
             send(sock , message , strlen(message) , 0 );
             printf("Authed otheruser!\n");
             authing = 0;
           }
-          else if(search("PRIVMSG "+nick+" :otheruser2 password",buffer)){
+          snprintf( svalue, sizeof( svalue ), "%s%s%s", "PRIVMSG ", nick, " :otheruser2 password");
+          if(search(svalue,buffer)){
             message="MODE #channel +o :otheruser2\r\n";
             send(sock , message , strlen(message) , 0 );
             printf("Authed otheruser2!\n");
             authing = 0;
           }
-          else if(search("PRIVMSG "+nick+" :otheruser3 password",buffer)){
+          snprintf( svalue, sizeof( svalue ), "%s%s%s", "PRIVMSG ", nick, " :otheruser3 password");
+          if(search(svalue,buffer)){
             message="MODE #channel +o :otheruser3\r\n";
             send(sock , message , strlen(message) , 0 );
             printf("Authed otheruser3!\n");

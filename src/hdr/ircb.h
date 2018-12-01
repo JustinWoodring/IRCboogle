@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <sys/socket.h>
 #include <string.h>
+#include <sys/socket.h>
 #include <errno.h>
 #include <malloc.h>
 #include <asm/stat.h>
@@ -13,5 +13,7 @@
 #include <netdb.h>
 #include "definitions.h"
 
+char svalue[BUFFERSIZE];
+int sock, valread;
 int search(char * string, char buffer[BUFFERSIZE]);
 int openConnection(char * hostname);
