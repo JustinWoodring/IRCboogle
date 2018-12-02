@@ -26,10 +26,6 @@ int main(int argc, char ** argv)
   for(int i=lasti;i<32;i++){
     nick[i]='\0';
   }
-  for(int i=0;i<32;i++){
-    printf("%c\n", nick[i]);
-  }
-
 
   int connect = openConnection(IRCSERVER);
 	if (connect == -1){
@@ -83,7 +79,8 @@ int main(int argc, char ** argv)
   		}
     }
     if(inchannel == 0){
-      if(search("Thank you for using freenode!",buffer)){
+      snprintf( svalue, sizeof( svalue ), "%s%s%s", "001 ", nick, " :");
+      if(search(svalue,buffer)){
         message="JOIN :#channel\r\n";
         send(sock , message , strlen(message) , 0 );
         joined = 1;
